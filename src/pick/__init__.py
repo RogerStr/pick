@@ -15,6 +15,10 @@ KEYS_ENTER = (curses.KEY_ENTER, ord("\n"), ord("\r"))
 KEYS_UP = (curses.KEY_UP, ord("k"))
 KEYS_DOWN = (curses.KEY_DOWN, ord("j"))
 KEYS_SELECT = (curses.KEY_RIGHT, ord(" "))
+PAGE_UP = (curses.KEY_PPAGE, ord("u"))
+PAGE_DOWN = (curses.KEY_NPAGE, ord("i"))
+HOME = (curses.KEY_HOME, ord("1"))
+END = (curses.KEY_END, ord("2"))
 
 SYMBOL_CIRCLE_FILLED = "(x)"
 SYMBOL_CIRCLE_EMPTY = "( )"
@@ -58,6 +62,22 @@ class Picker(Generic[OPTION_T]):
         self.index += 1
         if self.index >= len(self.options):
             self.index = 0
+
+    def move_page_up(self) -> None:
+        self.index -= 8
+        if self.index < 0:
+            self.index = 0
+
+    def move_page_down(self) -> None:
+        self.index += 8
+        if self.index >= len(self.options):
+            self.index = len(self.options) - 1
+            
+    def move_home(self) -> None:
+        self.index = 0
+        
+    def move_end(self) -> None:
+        self.index = len(self.options) - 1
 
     def mark_index(self) -> None:
         if self.multiselect:
@@ -144,6 +164,14 @@ class Picker(Generic[OPTION_T]):
                 self.move_up()
             elif c in KEYS_DOWN:
                 self.move_down()
+            elif c in PAGE_UP:
+                self.move_page_up()
+            elif c in PAGE_DOWN:
+                self.move_page_down()
+            elif c in HOME:
+                self.move_home()
+            elif c in END:
+                self.move_end()
             elif c in KEYS_ENTER:
                 if (
                     self.multiselect
