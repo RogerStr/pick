@@ -57,22 +57,30 @@ class Picker(Generic[OPTION_T]):
         self.index -= 1
         if self.index < 0:
             self.index = len(self.options) - 1
+        if self.options[self.index] == "":
+            self.move_up()
 
     def move_down(self) -> None:
         self.index += 1
         if self.index >= len(self.options):
             self.index = 0
+        if self.options[self.index] == "":
+            self.move_down()
 
     def move_page_up(self) -> None:
         self.index -= 8
         if self.index < 0:
             self.index = 0
+        if self.options[self.index] == "":
+            self.move_up()
 
     def move_page_down(self) -> None:
         self.index += 8
         if self.index >= len(self.options):
             self.index = len(self.options) - 1
-            
+        if self.options[self.index] == "":
+            self.move_down()
+
     def move_home(self) -> None:
         self.index = 0
         
