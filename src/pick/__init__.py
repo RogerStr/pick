@@ -178,7 +178,7 @@ class Picker(Generic[OPTION_T]):
                 self.move_page_down()
             elif c in HOME:
                 self.move_home()
-            elif c in END:
+            elif c in END or c == 52:
                 self.move_end()
             elif c in KEYS_ENTER:
                 if (
